@@ -1,32 +1,24 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import companyNames from './companyNames'
+import adjectivePhrases from './adjectivePhrases'
+import prepositions from './prepositions'
 import './App.css';
 
 class App extends Component {
-
-  getCompanyNames(numberOfCompanies) {
-    let items = ["Uber", "Lyft", "Postmates", "Airbnb", "Zenefits", "Apple", "Amazon"]
-    return this.shuffleArray(items).slice(numberOfCompanies)
-  }
-
-  getPrepositions(numberOfPhrases) {
-    let items = ["and", "but with", "built on", "fermented by", "distilled into", "paired with", "combined with", "ripping off"]
-    return this.shuffleArray(items).slice(numberOfPhrases)
-  }
-
-  getAdjectivePhrases(numberOfPhrases) {
-    let items = ["on the backend", "on crack", "but on fleek", "had a baby"]
-    return this.shuffleArray(items).slice(numberOfPhrases)
+  sampleFrom(array, numberOfItems) {
+    let shuffledArray = array.sort( () => Math.random() - 0.5)
+    return shuffledArray.slice(numberOfItems)
   }
 
   createSentence() {
-    let companyNames = this.getCompanyNames(3),
-        prepositions = this.getPrepositions(3),
-        adjectivePhrases = this.getAdjectivePhrases(2),
+    let names = this.sampleFrom(companyNames, 3),
+        preps = this.sampleFrom(prepositions, 3),
+        aps = this.sampleFrom(adjectivePhrases, 2),
         sentenceFormats = [
-          `${companyNames[0]} ${prepositions[0]} ${companyNames[1]} ${prepositions[1]} ${companyNames[2]} ${adjectivePhrases[0]}.`,
-          `${companyNames[0]} ${prepositions[0]} ${companyNames[1]} ${adjectivePhrases[0]}.`,
-          `${companyNames[0]} ${adjectivePhrases[0]} ${prepositions[0]} ${companyNames[1]} ${adjectivePhrases[1]}.`,
-          `${companyNames[0]} ... ${adjectivePhrases[0]}.`
+          `${names[0]} ${preps[0]} ${names[1]} ${preps[1]} ${names[2]} ${aps[0]}.`,
+          `${names[0]} ${preps[0]} ${names[1]} ${adjectivePhrases[0]}.`,
+          `${names[0]} ${aps[0]} ${preps[0]} ${names[1]} ${aps[1]}.`,
+          `${names[0]} ... ${aps[0]}.`
         ],
         randomIndex = Math.floor(Math.random() * sentenceFormats.length)
     return sentenceFormats[randomIndex]
@@ -37,16 +29,11 @@ class App extends Component {
     this.setState({ sentence })
   }
 
-  shuffleArray(array) {
-    return array.sort( () => Math.random() - 0.5)
-  }
-
   componentWillMount() {
     this.setSentence()
   }
 
   render() {
-
     return (
       <div className="App">
         <p>{this.state.sentence}</p>
